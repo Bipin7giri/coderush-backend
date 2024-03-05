@@ -1,8 +1,4 @@
-import express, {
-  type Application,
-  type Request,
-  type Response,
-} from "express";
+import express, { type Request, type Response } from "express";
 import RouteRouter from "./api/api";
 import cors from "cors";
 import { Server } from "socket.io";
@@ -19,21 +15,31 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const activeUsers: any = {};
+let userListsByRoom: any = {};
 const appService = new AppService();
 io.on("connection", (socket) => {
   console.log(`a user connected ${socket.id}`);
 
-  socket.on("join_room", (roomId) => {
-    socket.join(roomId);
-    console.log(`Socket ${socket.id} joined room ${roomId}`);
+  socket.on("join_room", (data) => {
+    socket.join(data.roomId);
+    console.log(`Socket ${socket.id} joined room ${data.roomId}`);
+    if (!userListsByRoom[data.roomId]) {
+      userListsByRoom[data.roomId] = [];
+    }
 
+    // Check if the username is not already in the user list for the room
+    if (!userListsByRoom[data.roomId].includes(data.username)) {
+      // Add the username to the user list for the room
+      userListsByRoom[data.roomId].push(data.username);
+    }
     // Increment the active user count for the room
-    activeUsers[roomId] = (activeUsers[roomId] || 0) + 1;
-    // Send the updated active user count back to the frontend
-    io.emit("active_users_count", {
-      roomId,
+    activeUsers[data.roomId] = (activeUsers[data.roomId] || 0) + 1;
+    // Send the updated active user count back to the users in the same room
+    io.to(data.roomId).emit("active_users_count", {
+      roomId: data.roomId,
+      usersLists: userListsByRoom?.[data.roomId],
       users: activeUsers,
-      count: activeUsers[roomId],
+      count: activeUsers[data.roomId],
     });
   });
 
