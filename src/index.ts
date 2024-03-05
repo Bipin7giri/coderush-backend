@@ -5,26 +5,64 @@ import express, {
 } from "express";
 import RouteRouter from "./api/api";
 import cors from "cors";
-// import { connectDb } from "./src/config/database.connection";
-// import { startCronJob } from "./src/cron-jobs/cron-job";
-import { AppDataSource } from "./config/database.config";
+import { Server } from "socket.io";
+import http from "http";
+import AppService from "./app/app.service";
 
-// import { ScrapAll } from "./scrap";
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+});
 
-// AppDataSource.initialize()
-//   .then(async () => {
-// const brokerService  = new BrokerService();
-// await brokerService.createMany()
-// const companyService = new CompanyService()
-// await companyService.createMany()
-// void ScrapAll();
-// const notificationService = new NotificationService();
-// await notificationService.sendNotification();
-const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const activeUsers: any = {};
+const appService = new AppService();
+io.on("connection", (socket) => {
+  console.log(`a user connected ${socket.id}`);
 
+  socket.on("join_room", (roomId) => {
+    socket.join(roomId);
+    console.log(`Socket ${socket.id} joined room ${roomId}`);
+
+    // Increment the active user count for the room
+    activeUsers[roomId] = (activeUsers[roomId] || 0) + 1;
+    // Send the updated active user count back to the frontend
+    io.emit("active_users_count", {
+      roomId,
+      users: activeUsers,
+      count: activeUsers[roomId],
+    });
+  });
+
+  socket.on("send_message", (data) => {
+    const result = appService.executeNodeCodeSync(data);
+    console.log(result);
+    // Emit the message to everyone in the room associated with the message
+    io.emit("receive_message", {
+      message: result,
+      senderId: socket.id,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket ${socket.id} disconnected`);
+    // Decrease the active user count for the room when a user disconnects
+    Object.keys(activeUsers).forEach((roomId) => {
+      if (socket.rooms.has(roomId)) {
+        activeUsers[roomId] = Math.max(0, activeUsers[roomId] - 1);
+        console.log(activeUsers);
+        // Send the updated active user count back to the frontend
+        io.emit("active_users_count", {
+          roomId,
+          count: activeUsers[roomId],
+        });
+      }
+    });
+  });
+});
 // startCronJob();
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
@@ -38,7 +76,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 app.use("/api/v1", RouteRouter);
 
-app.listen(8000, () => {
+server.listen(8000, () => {
   console.log("server listening on port" + 8000);
 });
 // console.log("connected to Database");

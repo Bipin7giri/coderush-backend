@@ -20,6 +20,7 @@
     "pg": "^8.11.3",
     "pidusage": "^3.0.2",
     "reflect-metadata": "^0.2.1",
+    "socket.io": "^4.7.4",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.20",
     "xlsx": "^0.18.5"
