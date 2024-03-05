@@ -8,7 +8,7 @@ import AppService from "./app/app.service";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "https://coderush-ui.vercel.app/", methods: ["GET", "POST"] },
+  cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
 app.use(cors());
