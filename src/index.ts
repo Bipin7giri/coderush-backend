@@ -1,10 +1,10 @@
-import express, { type Request, type Response } from "express";
+import express, { Application, type Request, type Response } from "express";
 import RouteRouter from "./api/api";
 import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
 import AppService from "./app/app.service";
-
+import { AppDataSource } from "./config/database.config";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -77,24 +77,32 @@ io.on("connection", (socket) => {
     });
   });
 });
-// startCronJob();
-app.get("/", (req: Request, res: Response) => {
-  return res.status(200).json({
-    message: "server is running fine",
-    endpoint: {
-      company: {
-        get: "/api/v1/company",
-      },
-    },
-  });
-});
-app.use("/api/v1", RouteRouter);
 
-server.listen(8000, () => {
-  console.log("server listening on port" + 8000);
-});
-// console.log("connected to Database");
-// })
-// .catch((error) => {
-//   console.log(error);
-// });
+AppDataSource.initialize()
+  .then(async () => {
+    const app: Application = express();
+    app.use(cors());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
+    // startCronJob();
+    app.get("/", (req: Request, res: Response) => {
+      return res.status(200).json({
+        message: "server is running fine",
+        endpoint: {
+          company: {
+            get: "/api/v1/",
+          },
+        },
+      });
+    });
+    app.use("/api/v1", RouteRouter);
+
+    app.listen(5000, () => {
+      console.log("server listening on port " + 5000);
+    });
+    console.log("connected to Database");
+  })
+  .catch((error) => {
+    console.log(error);
+  });

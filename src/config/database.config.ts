@@ -1,21 +1,20 @@
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { DataSource } from "typeorm";
-
 import { UserCredential } from "../users/UserCredential.entities";
 import { User } from "../users/user.entity";
 dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  // url: "postgres://Bipin7giri:OdiAVjMr82PJ@ep-orange-voice-022920.us-east-2.aws.neon.tech/broker?sslmode=require",
-  url: process.env.DATABASE_URL,
+  host: "localhost", // Your local database host
+  port: 5432, // Your local database port
+  username: "postgres", // Your local database username
+  password: "12345", // Your local database password
+  database: "codeRush", // Your local database name
   synchronize: true,
-  // logging: true,
-  entities: [
-    UserCredential,
-    User,
-  ],
+  logging: false,
+  entities: [UserCredential,User],
   migrations: [],
   subscribers: [],
 });
