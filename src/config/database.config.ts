@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { DataSource } from "typeorm";
 import { UserCredential } from "../users/UserCredential.entities";
 import { User } from "../users/user.entity";
+import { Role } from "../users/roles.entity";
+import { Questions } from "../questions/question.entity";
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -14,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: "codeRush", // Your local database name
   synchronize: true,
   logging: false,
-  entities: [UserCredential,User],
+  entities: [UserCredential, User, Role,Questions],
   migrations: [],
   subscribers: [],
 });
