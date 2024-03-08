@@ -1,8 +1,10 @@
-import express, { Express } from "express";
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import express, { type Express } from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
 import AppService from "../app/app.service";
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const socketService = (app: Express) => {
   const server = http.createServer(app);
   const io = new Server(server, {
@@ -13,14 +15,14 @@ export const socketService = (app: Express) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   const activeUsers: any = {};
-  let userListsByRoom: any = {};
+  const userListsByRoom: any = {};
   const appService = new AppService();
 
   io.on("connection", (socket) => {
     console.log(`a user connected ${socket.id}`);
 
     socket.on("join_room", (data) => {
-      socket.join(data.roomId);
+      void socket.join(data.roomId);
       console.log(`Socket ${socket.id} joined room ${data.roomId}`);
 
       if (!userListsByRoom[data.roomId]) {

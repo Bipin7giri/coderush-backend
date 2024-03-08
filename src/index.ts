@@ -1,4 +1,4 @@
-import express, { Application, type Request, type Response } from "express";
+import express, { type Request, type Response } from "express";
 import RouteRouter from "./api/api";
 import { socketService } from "./socket/socket.service";
 import { databaseInit } from "./database/database.connection";
