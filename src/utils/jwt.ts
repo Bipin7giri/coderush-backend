@@ -6,6 +6,7 @@ export async function generateToken(user: any, expire?: any): Promise<any> {
         // email: user.email,
         id: user.id,
         email: user.email,
+        role: user.roles[0].name,
       },
       "json_web_token_pw",
       {

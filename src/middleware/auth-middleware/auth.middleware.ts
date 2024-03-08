@@ -40,6 +40,7 @@ export class AuthMiddleware {
       }
     });
   }
+
   AdminRoleMiddleware(req: any, res: Response, next: NextFunction): void {
     if (req?.role[0]?.name === "admin") {
       next();

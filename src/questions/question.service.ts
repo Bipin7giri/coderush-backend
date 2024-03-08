@@ -12,22 +12,22 @@ import { Difficulty } from "../enum/difficulty.enum";
 export class QuestionsService {
   constructor(
     private readonly questionsRepository = AppDataSource.getRepository(
-      Questions
-    )
+      Questions,
+    ),
   ) {}
-  async create(questionsData: {
-    title: string;
-    description: string;
-    difficulty: Difficulty;
-    solution: string;
-    user: User;
-  }): Promise<Questions> {
-    return await this.questionsRepository.save(questionsData);
-  }
+  // async create(questionsData: {
+  //   title: string;
+  //   description: string;
+  //   difficulty: Difficulty;
+  //   solution: string;
+  //   user: User;
+  // }): Promise<Questions> {
+  //   return await this.questionsRepository.save(questionsData);
+  // }
 
   async update(
     questionId: number,
-    questionData: Partial<Questions>
+    questionData: Partial<Questions>,
   ): Promise<Questions | undefined> {
     try {
       const findOptions: FindOneOptions<Questions> = {
@@ -46,7 +46,7 @@ export class QuestionsService {
 
   async get(
     page: string,
-    perPage: string
+    perPage: string,
   ): Promise<PaginationResponse<Questions>> {
     const queryBuilder: SelectQueryBuilder<Questions> =
       this.questionsRepository.createQueryBuilder("questions_entity");
@@ -58,7 +58,7 @@ export class QuestionsService {
     const pagination = new Pagination<Questions>(
       this.questionsRepository,
       queryBuilder,
-      paginationOptions
+      paginationOptions,
     );
     return await pagination.paginate();
   }

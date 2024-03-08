@@ -1,0 +1,21 @@
+export enum ApiSuccessStatus {
+  SUCCESS = "Success",
+  ERROR = "Error",
+  PENDING = "Pending",
+  CREATED = "Created",
+  UPDATED = "Updated",
+  DELETED = "Deleted",
+  UNAUTHORIZED = "Unauthorized",
+  FORBIDDEN = "Forbidden",
+  NOT_FOUND = "Not Found",
+  CONFLICT = "Conflict",
+  BAD_REQUEST = "Bad Request",
+  ACCEPTED = "Accepted",
+  NO_CONTENT = "No Content",
+  PARTIAL_CONTENT = "Partial Content",
+  SERVICE_UNAVAILABLE = "Service Unavailable",
+  TOO_MANY_REQUESTS = "Too Many Requests",
+  INTERNAL_SERVER_ERROR = "Internal Server Error",
+  GATEWAY_TIMEOUT = "Gateway Timeout",
+  // Add more statuses as needed
+}

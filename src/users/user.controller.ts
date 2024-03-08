@@ -1,12 +1,19 @@
+import { ApiResponseHandler } from "../utils/apiResponse.utils";
 import { UserService } from "./user.service";
-import { type Response, type Request } from "express";
+import { Request, Response } from "express";
+
 const userService = new UserService();
+
 export class UserController {
-  async createAdmin(req: Request, res: Response): Promise<any> {
-    await userService.createAdmin({
-      email: "admin@gmail.com",
-      password: "12345",
-      res,
-    });
+  async getMe(req: any, res: Response): Promise<void> {
+    const userId = req.user;
+    const data = await userService.getMe(userId);
+    ApiResponseHandler.handleSuccess(res, data);
+  }
+  async updateMe(req: any, res: Response): Promise<void> {
+    const userId = req.user;
+    console.log(userId);
+    const data = await userService.updateMe(userId, req.body);
+    ApiResponseHandler.handleSuccess(res, data);
   }
 }

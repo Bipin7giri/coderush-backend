@@ -1,62 +1,50 @@
-import { AppDataSource } from "../config/database.config";
-import { User } from "../users/user.entity";
-import { generateHashPassword } from "../utils/hashpassword";
-import { UserCredential } from "./UserCredential.entities";
-import { type Response } from "express";
-import { Role } from "./roles.entity";
-import { UserRole } from "../enum/user-role.enum";
+import { ApiSuccessStatus } from "../constant/message.constant";
+import { Role } from "../roles/roles.entity";
+import { User } from "./user.entity";
+
+interface RegisterUserIF {
+  email: string;
+  password: string;
+  position: string;
+  address: string;
+  links: string[];
+}
 
 export class UserService {
   constructor(
-    private readonly userRepository = AppDataSource.getRepository(User),
-    private readonly userCredentialRepository = AppDataSource.getRepository(
-      UserCredential
-    ),
-    private readonly roleRepository = AppDataSource.getRepository(Role)
+    private readonly userModel = User,
+    private readonly roleModel = Role,
   ) {}
-
-  async createAdmin({
-    email,
-    password,
-    res,
-  }: {
-    email: string;
-    password: string;
-    res: Response;
-  }): Promise<void> {
+  async getMe(id: string): Promise<User | string> {
     try {
-      // Find or create the admin role
-      let adminRole = await this.roleRepository.findOne({
-        where: { name: UserRole.ADMIN }, // Assuming UserRole.ADMIN exists
-      });
-      if (!adminRole) {
-        adminRole = await this.roleRepository.save({ name: UserRole.ADMIN });
-      }
-      const checkIfEmailAlreadyExist: User | null =
-        await this.userRepository.findOne({
-          where: {
-            email: email,
-          },
-        });
-      if (checkIfEmailAlreadyExist != null) {
-        res.status(401).json({
-          message: "Admin Already Exists",
-          status: 404,
-        });
-        return;
-      }
-      const hashedPassword: any = await generateHashPassword(password);
-      const userCredentialId: UserCredential =
-        await this.userCredentialRepository.save({
-          password: hashedPassword,
-        });
-      await this.userRepository.save({
-        email,
-        userCredentialId: userCredentialId.id,
-        roles: [adminRole],
-      });
-    } catch (err: any) {
-      throw err.message;
+      const user: any = await this.userModel
+        .findOne({
+          _id: id,
+        })
+        .select("-password");
+      return user;
+    } catch (error) {
+      return ApiSuccessStatus.INTERNAL_SERVER_ERROR;
+    }
+  }
+  async updateMe(id: string, data: any) {
+    try {
+      const user: any = await this.userModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          fullName: data.fullName,
+          username: data.username,
+          address: data.address,
+          phoneNumber: data.phoneNumber,
+          location: data.location,
+        },
+      );
+      console.log(user);
+      return user;
+    } catch (error) {
+      return ApiSuccessStatus.INTERNAL_SERVER_ERROR;
     }
   }
 }
