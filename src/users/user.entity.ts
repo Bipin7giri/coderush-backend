@@ -1,35 +1,43 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
-import { BaseEntity } from "../utils/databaseutils/base.entity";
-import { UserCredential } from "./UserCredential.entities";
-@Entity()
-export class User extends BaseEntity {
-  @Column({ nullable: true })
+import mongoose, { Schema, Document, Types, Model } from "mongoose";
+
+export interface User extends Document {
   fullName: string;
-
-  @Column({ nullable: true })
   username: string;
-
-  @Column()
   email: string;
-
-  @Column({ nullable: true })
   address: string;
-
-  @Column({ nullable: true })
   phoneNumber: string;
-
-  @Column({ nullable: true })
   location: string;
-
-  @Column({ nullable: true })
+  position: string;
   avatar: string;
-
-  @Column({ nullable: true })
   isBlocked: boolean;
-
-  @OneToOne(() => UserCredential, (uc) => uc.userId)
-  @JoinColumn({ name: "user_credential_id" })
-  userCredentialId: UserCredential | number;
-
- 
+  password: string;
+  roles: Types.ObjectId[];
+  questions: Types.ObjectId[];
 }
+
+const userSchema: Schema<User> = new Schema<User>({
+  fullName: String,
+  username: String,
+  email: String,
+  address: String,
+  phoneNumber: String,
+  location: String,
+  position: String,
+  avatar: String,
+  isBlocked: Boolean,
+  password: String,
+  roles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Role",
+    },
+  ],
+  questions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Question",
+    },
+  ],
+});
+
+export const User: Model<User> = mongoose.model<User>("User", userSchema);
