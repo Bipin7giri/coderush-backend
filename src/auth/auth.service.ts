@@ -1,58 +1,47 @@
-import { AppDataSource } from "../config/database.config";
-import { UserCredential } from "../users/UserCredential.entities";
+import { ApiSuccessStatus } from "../constant/message.constant";
+import { UserRole } from "../enum/user-role.enum";
+import { Role } from "../roles/roles.entity";
 import { User } from "../users/user.entity";
 import { comparePassword, generateHashPassword } from "../utils/hashpassword";
 import { generateToken } from "../utils/jwt";
-import { type Response } from "express";
+import { Request, Response } from "express";
+interface RegisterUserIF {
+  email: string;
+  password: string;
+  position: string;
+  address: string;
+  links: string[];
+}
+
 export class AuthService {
   constructor(
-    private readonly userRepository = AppDataSource.getRepository(User),
-    private readonly userCredentialRepository = AppDataSource.getRepository(
-      UserCredential,
-    ),
+    private readonly userModel = User,
+    private readonly roleModel = Role,
   ) {}
-
-  async register({
-    email,
-    password,
-    res,
-  }: {
-    email: string;
-    password: string;
-    res: Response;
-  }): Promise<void> {
+  async registerUser(data: RegisterUserIF): Promise<string> {
     try {
-      const checkIfEmailAlreadyExist: User | null =
-        await this.userRepository.findOne({
-          where: {
-            email: email,
-          },
-        });
-      if (checkIfEmailAlreadyExist != null) {
-        res.status(401).json({
-          message: "Invalid password !!",
-          status: 404,
-        });
-      }
-      const hashedPassword: any = await generateHashPassword(password);
-      const userCredentialId: UserCredential =
-        await this.userCredentialRepository.save({
-          password: hashedPassword,
-        });
-      console.log(userCredentialId);
-      await this.userRepository.save({
-        email,
-        userCredentialId: userCredentialId.id,
+      const hashedPassword: any = await generateHashPassword(data.password);
+      const user = await this.userModel.create({
+        email: data.email,
+        password: hashedPassword,
+        position: data.position,
+        address: data.address,
+        links: data.links,
       });
-      res.json({
-        message: "register successful !!",
-        status: 200,
-      });
-    } catch (err: any) {
-      throw err.message;
+      await this.roleModel.findOneAndUpdate(
+        {
+          name: UserRole.USER,
+        },
+        {
+          $push: { users: user },
+        },
+      );
+      return ApiSuccessStatus.SUCCESS;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Something went wrong");
     }
   }
-
   async login({
     email,
     password,
@@ -64,19 +53,14 @@ export class AuthService {
   }): Promise<void> {
     try {
       try {
-        const repo = AppDataSource.getRepository(User);
-        const user: any = await repo.findOne({
-          where: {
-            email,
-          },
-          relations: {
-            userCredentialId: true,
-          },
-        });
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        const user: any = await this.userModel
+          .findOne({
+            email: email,
+          })
+          .populate("roles");
         if (user) {
           const checkPassword: boolean = await comparePassword(
-            user.userCredentialId.password,
+            user.password,
             password,
           );
           if (checkPassword) {

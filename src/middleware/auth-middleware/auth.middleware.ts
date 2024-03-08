@@ -30,14 +30,25 @@ export class AuthMiddleware {
           email: string;
           iat: number;
           exp: number;
+          role: [];
         } = getCurrentUser(authHeader);
         req.user = currentUser.id;
+        req.role = currentUser.role;
         next();
       } catch (err) {
-        console.log(err);
         res.send(err);
       }
     });
+  }
+
+  AdminRoleMiddleware(req: any, res: Response, next: NextFunction): void {
+    if (req?.role[0]?.name === "admin") {
+      next();
+    } else {
+      res.status(403).json({
+        message: "Forbidden",
+      });
+    }
   }
 }
 export function getCurrentUser(token: string): any {

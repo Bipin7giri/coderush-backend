@@ -3,6 +3,7 @@
     "@apollo/server": "^4.10.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dot-env": "^0.0.1",
@@ -11,6 +12,7 @@
     "graphql": "^16.8.1",
     "http": "0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.2.1",
     "multer": "1.4.5-lts.1",
     "node-cron": "^3.0.3",
     "node-tsc": "^0.0.14",
@@ -20,6 +22,7 @@
     "pg": "^8.11.3",
     "pidusage": "^3.0.2",
     "reflect-metadata": "^0.2.1",
+    "socket.io": "^4.7.4",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.20",
     "xlsx": "^0.18.5"

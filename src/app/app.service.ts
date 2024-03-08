@@ -5,9 +5,10 @@ export default class AppService {
     try {
       const startTime = Date.now();
       sourceCode = JSON.parse(sourceCode);
-      const result = execSync(`node -e "${sourceCode}"`);
-      const endTime = Date.now();
+      const result = execSync(`node -e "${sourceCode}"`, { encoding: "utf-8" });
 
+      const endTime = Date.now();
+      console.log(result);
       const executionTime = endTime - startTime;
       console.log("Execution time:", executionTime, "milliseconds");
 
