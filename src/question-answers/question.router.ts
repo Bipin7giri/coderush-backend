@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router } from "express";
 import { QuestionController } from "./questionController";
 import { AuthMiddleware } from "../middleware/auth-middleware/auth.middleware";
