@@ -11,7 +11,7 @@ router.post(
   "/",
   //   authMiddleware.AuthenticationMiddleware,
   //   authMiddleware.AdminRoleMiddleware,
-  questionController.create
+  questionController.create,
 );
 
 router.get("/difficulty/:difficulty", questionController.getByDifficulty);

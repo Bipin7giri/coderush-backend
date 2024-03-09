@@ -15,7 +15,7 @@ export class QuestionController {
 
   async getByDifficulty(req: Request, res: Response): Promise<void> {
     const data = await questionService.findQuestionsByDifficulty(
-      req.params.difficulty
+      req.params.difficulty,
     );
     ApiResponseHandler.handleSuccess(res, data);
   }

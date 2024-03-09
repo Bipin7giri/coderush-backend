@@ -14,7 +14,7 @@ export class QuestionAnswerService {
   }
 
   async findQuestionsByDifficulty(
-    difficulty: string
+    difficulty: string,
   ): Promise<IQuestion[] | null> {
     try {
       const questions = await this.questionModel.find({ difficulty }).exec();

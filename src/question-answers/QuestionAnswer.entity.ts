@@ -49,7 +49,7 @@ const answerSchema = new Schema<IAnswer>({
 // Define models for questions and answers
 const Question: Model<IQuestion> = mongoose.model<IQuestion>(
   "Question",
-  questionSchema
+  questionSchema,
 );
 const Answer: Model<IAnswer> = mongoose.model<IAnswer>("Answer", answerSchema);
 

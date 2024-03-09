@@ -14,4 +14,5 @@ router.put(
   authMiddleware.AuthenticationMiddleware,
   userController.updateMe,
 );
+
 export default router;
