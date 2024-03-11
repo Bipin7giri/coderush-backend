@@ -5,7 +5,7 @@ import { databaseInit } from "./database/database.connection";
 
 databaseInit();
 const app = express();
-socketService(app);
+const server = socketService(app);
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
     message: "server is running fine",
@@ -18,7 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 app.use("/api/v1", RouteRouter);
 
-app.listen(8000, () => {
+server.listen(8000, () => {
   console.log("server listening on port " + 8000);
 });
 console.log("connected to Database");

@@ -4,6 +4,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
 import AppService from "../app/app.service";
+import { FastestFingerSocketService } from "./fastest-finger.socket.service";
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const socketService = (app: Express) => {
   const server = http.createServer(app);
@@ -20,6 +21,8 @@ export const socketService = (app: Express) => {
 
   io.on("connection", (socket) => {
     console.log(`a user connected ${socket.id}`);
+
+    FastestFingerSocketService(io, socket);
 
     socket.on("join_room", (data) => {
       void socket.join(data.roomId);
@@ -77,4 +80,5 @@ export const socketService = (app: Express) => {
       });
     });
   });
+  return server;
 };
