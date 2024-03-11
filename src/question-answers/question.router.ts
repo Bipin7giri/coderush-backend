@@ -14,7 +14,7 @@ router.post(
   questionController.create
 );
 
-router.patch(
+router.put(
   "/:id",
   //   authMiddleware.AuthenticationMiddleware,
   //   authMiddleware.AdminRoleMiddleware,
