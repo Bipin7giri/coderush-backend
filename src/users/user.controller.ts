@@ -1,6 +1,6 @@
 import { ApiResponseHandler } from "../utils/apiResponse.utils";
 import { UserService } from "./user.service";
-import { Request, Response } from "express";
+import { type Response } from "express";
 
 const userService = new UserService();
 
@@ -10,6 +10,12 @@ export class UserController {
     const data = await userService.getMe(userId);
     ApiResponseHandler.handleSuccess(res, data);
   }
+
+  async getUserById(req: any, res: Response): Promise<void> {
+    const data = await userService.getMe(req.params.userId);
+    ApiResponseHandler.handleSuccess(res, data);
+  }
+
   async updateMe(req: any, res: Response): Promise<void> {
     const userId = req.user;
     console.log(userId);

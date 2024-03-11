@@ -6,36 +6,40 @@ const userListsByRoom: any = {};
 export const FastestFingerSocketService = (io: any, socket: Socket) => {
   socket.on("join_fastet_finger_room", (data) => {
     const roomId = data.roomId;
-    void socket.join(roomId);
+    const questionId = data.questionId;
+    const compoundKey = roomId + "-" + questionId; // Creating a compound key
+
+    void socket.join(compoundKey);
     console.log(
-      `Socket ${data.username} joined room for fastest finger round ${roomId}`,
+      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`,
     );
 
     // Check if the room exists in the user list
-    if (!userListsByRoom[roomId]) {
-      userListsByRoom[roomId] = [];
+    if (!userListsByRoom[compoundKey]) {
+      userListsByRoom[compoundKey] = [];
     }
 
     // Check if the room is full (limit to 2 users)
-    if (userListsByRoom[roomId].length >= 2) {
+    if (userListsByRoom[compoundKey].length >= 2) {
       // Emit an event to inform the client that the room is full
-      socket.emit("room_full", { roomId });
+      socket.emit("room_full", { roomId, questionId });
       return; // Stop execution
     }
 
     // Check if the username is not already in the user list for the room
-    if (!userListsByRoom[roomId].includes(data.username)) {
+    if (!userListsByRoom[compoundKey].includes(data.username)) {
       // Add the username to the user list for the room
-      userListsByRoom[roomId].push(data.username);
+      userListsByRoom[compoundKey].push(data.username);
     }
 
-    activeUsers[roomId] = (activeUsers[roomId] || 0) + 1;
+    activeUsers[compoundKey] = (activeUsers[compoundKey] || 0) + 1;
 
-    io.to(roomId).emit("active_join_fastest_finger_count", {
-      roomId: roomId,
-      usersLists: userListsByRoom[roomId],
+    io.to(compoundKey).emit("active_join_fastest_finger_count", {
+      roomId,
+      questionId,
+      usersLists: userListsByRoom[compoundKey],
       users: activeUsers,
-      count: activeUsers[roomId],
+      count: activeUsers[compoundKey],
     });
   });
 };

@@ -14,6 +14,13 @@ router.post(
   questionController.create
 );
 
+router.put(
+  "/:id",
+  //   authMiddleware.AuthenticationMiddleware,
+  //   authMiddleware.AdminRoleMiddleware,
+  questionController.update
+);
+
 router.get("/difficulty/:difficulty", questionController.getByDifficulty);
 router.get("/", questionController.getAll);
 export default router;
