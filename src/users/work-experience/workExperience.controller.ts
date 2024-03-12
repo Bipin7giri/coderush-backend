@@ -16,4 +16,17 @@ export class WorkExperienceController {
     const data = await workExperienceService.getByUserId(userId);
     ApiResponseHandler.handleSuccess(res, data);
   }
+
+  async remove(req: any, res: Response): Promise<void> {
+    const id = req.params.id;
+    const data = await workExperienceService.remove(id);
+    ApiResponseHandler.handleSuccess(res, data);
+  }
+
+  async update(req: any, res: Response): Promise<void> {
+    const id = req.params.id;
+    const education = req.body;
+    const data = await workExperienceService.update(id, education);
+    ApiResponseHandler.handleSuccess(res, data);
+  }
 }

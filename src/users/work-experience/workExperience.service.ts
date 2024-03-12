@@ -42,4 +42,16 @@ export class WorkExperienceService {
       user: userId,
     });
   }
+
+  async remove(id: string): Promise<string> {
+    console.log(id);
+    const data = await this.workExperienceModel.findOneAndDelete({ _id: id });
+    console.log(data);
+    return ApiSuccessStatus.DELETED;
+  }
+
+  async update(id: string, workExperience: WorkExperience): Promise<string> {
+    await this.workExperienceModel.findOneAndUpdate({ id }, workExperience);
+    return ApiSuccessStatus.UPDATED;
+  }
 }

@@ -39,4 +39,16 @@ export class EducationService {
       user: userId,
     });
   }
+
+  async remove(id: string): Promise<string> {
+    console.log(id);
+    const data = await this.educationModel.findOneAndDelete({ _id: id });
+    console.log(data);
+    return ApiSuccessStatus.DELETED;
+  }
+
+  async update(id: string, education: Education): Promise<string> {
+    await this.educationModel.findOneAndUpdate({ id }, education);
+    return ApiSuccessStatus.UPDATED;
+  }
 }

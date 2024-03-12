@@ -19,7 +19,7 @@ export class ResumeService {
       const result = await this.resumeModel.create({
         fileId: resume.fileId,
         fileName: "resume",
-        user: user,
+        user,
       });
       await this.userModel.findOneAndUpdate(
         { _id: userId },

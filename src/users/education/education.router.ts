@@ -16,4 +16,16 @@ router.get(
   educationController.getById
 );
 
+router.put(
+  "/:id",
+  authMiddleware.AuthenticationMiddleware,
+  educationController.update
+);
+
+router.delete(
+  "/:id",
+  // authMiddleware.AuthenticationMiddleware,
+  educationController.remove
+);
+
 export default router;
