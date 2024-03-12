@@ -4,6 +4,8 @@ import AppRouter from "../app/app.router";
 import UserRouter from "../users/user.router";
 import UploadRouter from "../file-upload/fileUpload.router";
 import QuestionRouter from "../question-answers/question.router";
+import FastestFingerQuestionRouter from "../fastest-finger/fastest-finger.router";
+
 import RoleRouter from "../roles/role.router";
 import WorkExperienceRouter from "../users/work-experience/workExperience.router";
 import EducationRouter from "../users/education/education.router";
@@ -16,5 +18,6 @@ router.use("/work-experience", WorkExperienceRouter);
 router.use("/education", EducationRouter);
 router.use("/upload", UploadRouter);
 router.use("/question", QuestionRouter);
+router.use("/fastest-finger", FastestFingerQuestionRouter);
 
 export default router;
