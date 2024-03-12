@@ -1,6 +1,8 @@
+import { clouddebugger } from "googleapis/build/src/apis/clouddebugger";
 import { ApiSuccessStatus } from "../../constant/message.constant";
 import { Logger } from "../../logger/loger";
 import { User } from "../../users/user.entity";
+import AppService from "../app.service";
 import FastestFingerModel, {
   type IFastestFinger,
 } from "./fastest-finger.schema";
@@ -10,6 +12,7 @@ export class FastestFingerService {
     private readonly fastestFingerModel = FastestFingerModel,
     private readonly userModel = User,
     private readonly log = new Logger(),
+    private readonly appService = new AppService()
   ) {}
 
   async create(fastestFinger: IFastestFinger): Promise<string> {
@@ -34,5 +37,16 @@ export class FastestFingerService {
     return await this.fastestFingerModel.findOne({
       user: userId,
     });
+  }
+
+  async verifyAnswer(code: string, answer: any) {
+    try {
+      const output: any = this.appService.executeNodeCodeSync(code);
+      console.log(answer);
+      console.log(output.output.trim());
+      return output.output.trim() === answer ? true : false;
+    } catch (err) {
+      false;
+    }
   }
 }

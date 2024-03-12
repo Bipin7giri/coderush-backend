@@ -1,17 +1,21 @@
-import { Socket } from "socket.io";
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { type Socket } from "socket.io";
+import FastestFingerModel from "../app/fastest-finger/fastest-finger.schema";
+import { FastestFingerService } from "../app/fastest-finger/fastest-finger.service";
 
 const activeUsers: any = {};
 const userListsByRoom: any = {};
-
+const fastestFingerService = new FastestFingerService();
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const FastestFingerSocketService = (io: any, socket: Socket) => {
-  socket.on("join_fastet_finger_room", (data) => {
+  socket.on("join_fastest_finger_room", (data) => {
     const roomId = data.roomId;
     const questionId = data.questionId;
     const compoundKey = roomId + "-" + questionId; // Creating a compound key
 
     void socket.join(compoundKey);
     console.log(
-      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`,
+      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`
     );
 
     // Check if the room exists in the user list
@@ -40,6 +44,17 @@ export const FastestFingerSocketService = (io: any, socket: Socket) => {
       usersLists: userListsByRoom[compoundKey],
       users: activeUsers,
       count: activeUsers[compoundKey],
+    });
+  });
+
+  socket.on("send_fastest_finger_data", (data) => {
+    console.log(data);
+    const result = fastestFingerService.verifyAnswer(data.code, data.answer);
+    io.to(data.roomId).emit("receive_fastest_finger_data", {
+      timer: data.timer,
+      username: data.username,
+      result,
+      senderId: socket.id,
     });
   });
 };
