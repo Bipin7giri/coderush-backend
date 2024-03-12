@@ -7,25 +7,25 @@ const router = Router();
 router.post(
   "/",
   authMiddleware.AuthenticationMiddleware,
-  workExperienceController.post
+  workExperienceController.post,
 );
 
 router.get(
   "/",
   authMiddleware.AuthenticationMiddleware,
-  workExperienceController.getById
+  workExperienceController.getById,
 );
 
 router.put(
   "/:id",
   authMiddleware.AuthenticationMiddleware,
-  workExperienceController.update
+  workExperienceController.update,
 );
 
 router.delete(
   "/:id",
   // authMiddleware.AuthenticationMiddleware,
-  workExperienceController.remove
+  workExperienceController.remove,
 );
 
 export default router;

@@ -7,7 +7,7 @@ dotenv.config();
 const SCOPES: string[] = ["https://www.googleapis.com/auth/drive.file"];
 
 async function getFileMetadata(
-  fileId: string
+  fileId: string,
 ): Promise<{ name: string; mimeType: string }> {
   const authClient = await authorize();
   const drive = google.drive({ version: "v3", auth: authClient });
@@ -26,7 +26,7 @@ async function authorize(): Promise<any> {
     process.env.CLIENT_EMAIL,
     null as any,
     process.env.PRIVATE_KEY,
-    SCOPES
+    SCOPES,
   );
   await jwtClient.authorize();
   return jwtClient;
@@ -83,7 +83,7 @@ export async function uploadFileToGoogleDrive(filePath: string): Promise<any> {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function downloadFile(
-  fileId: string
+  fileId: string,
 ): Promise<{ buffer: Buffer; metadata: { name: string; mimeType: string } }> {
   const authClient = await authorize();
   const drive = google.drive({ version: "v3", auth: authClient });
@@ -110,7 +110,7 @@ export async function downloadFile(
         data.on("error", (err: any) => {
           reject(err);
         });
-      }
+      },
     );
   });
 }

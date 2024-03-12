@@ -5,7 +5,7 @@ import { User } from "./user.entity";
 export class UserService {
   constructor(
     private readonly userModel = User,
-    private readonly roleModel = Role
+    private readonly roleModel = Role,
   ) {}
 
   async getMe(id: string): Promise<User | string> {
@@ -38,7 +38,7 @@ export class UserService {
           address: data.address,
           phoneNumber: data.phoneNumber,
           location: data.location,
-        }
+        },
       );
       console.log(user);
       return user;

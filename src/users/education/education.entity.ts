@@ -27,5 +27,5 @@ const educationSchema: Schema<Education> = new Schema<Education>({
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Education: Model<Education> = mongoose.model<Education>(
   "Education",
-  educationSchema
+  educationSchema,
 );

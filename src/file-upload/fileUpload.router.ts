@@ -9,13 +9,13 @@ const uploadFileController = new UploadFileController();
 router.post(
   "/avatar",
   upload.single("avatar"),
-  uploadFileController.uploadAvatar
+  uploadFileController.uploadAvatar,
 );
 router.post(
   "/resume",
   upload.single("resume"),
   authMiddleware.AuthenticationMiddleware,
-  uploadFileController.uploadResume
+  uploadFileController.uploadResume,
 );
 
 router.get("/resume/download/:fileId", uploadFileController.downloadResume);

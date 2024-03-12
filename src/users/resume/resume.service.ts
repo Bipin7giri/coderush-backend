@@ -7,7 +7,7 @@ export class ResumeService {
   constructor(
     private readonly resumeModel = Resume,
     private readonly userModel = User,
-    private readonly log = new Logger()
+    private readonly log = new Logger(),
   ) {}
 
   async create(userId: string, resume: Resume): Promise<string> {
@@ -26,7 +26,7 @@ export class ResumeService {
         {
           $push: { resume: result },
           isNew: true,
-        }
+        },
       );
       return ApiSuccessStatus.CREATED;
     } catch (error) {

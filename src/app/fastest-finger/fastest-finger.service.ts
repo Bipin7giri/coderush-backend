@@ -12,7 +12,7 @@ export class FastestFingerService {
     private readonly fastestFingerModel = FastestFingerModel,
     private readonly userModel = User,
     private readonly log = new Logger(),
-    private readonly appService = new AppService()
+    private readonly appService = new AppService(),
   ) {}
 
   async create(fastestFinger: IFastestFinger): Promise<string> {

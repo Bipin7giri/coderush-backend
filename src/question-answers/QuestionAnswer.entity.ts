@@ -33,7 +33,7 @@ const questionSchema = new Schema<IQuestion>({
   tags: [{ type: String }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  answers: [{ type: String }], 
+  answers: [{ type: String }],
 });
 
 // Define schema for answers

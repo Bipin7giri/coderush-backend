@@ -24,14 +24,14 @@ export class QuestionController {
     const data = await questionService.findAllQuestions(
       page,
       limit,
-      searchQuery
+      searchQuery,
     );
     ApiResponseHandler.handleSuccess(res, data);
   }
 
   async getByDifficulty(req: Request, res: Response): Promise<void> {
     const data = await questionService.findQuestionsByDifficulty(
-      req.params.difficulty
+      req.params.difficulty,
     );
     ApiResponseHandler.handleSuccess(res, data);
   }

@@ -15,7 +15,7 @@ export const FastestFingerSocketService = (io: any, socket: Socket) => {
 
     void socket.join(compoundKey);
     console.log(
-      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`
+      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`,
     );
 
     // Check if the room exists in the user list
