@@ -18,7 +18,7 @@ interface RegisterUserIF {
 export class AuthService {
   constructor(
     private readonly userModel = User,
-    private readonly roleModel = Role,
+    private readonly roleModel = Role
   ) {}
 
   async registerUser(data: RegisterUserIF): Promise<string> {
@@ -35,18 +35,16 @@ export class AuthService {
         address: data.address,
         links: data.links,
       });
-      console.log(roles);
       await this.roleModel.findOneAndUpdate(
         {
           name: UserRole.USER,
         },
         {
           $push: { users: user },
-        },
+        }
       );
       return ApiSuccessStatus.SUCCESS;
     } catch (error) {
-      console.log(error);
       throw new Error("Something went wrong");
     }
   }
@@ -67,11 +65,10 @@ export class AuthService {
             email: email,
           })
           .populate("roles");
-        console.log(user);
         if (user) {
           const checkPassword: boolean = await comparePassword(
             user.password,
-            password,
+            password
           );
           if (checkPassword) {
             const accessToken: any = await generateToken(user);

@@ -16,4 +16,16 @@ router.get(
   workExperienceController.getById,
 );
 
+router.put(
+  "/:id",
+  authMiddleware.AuthenticationMiddleware,
+  workExperienceController.update,
+);
+
+router.delete(
+  "/:id",
+  // authMiddleware.AuthenticationMiddleware,
+  workExperienceController.remove,
+);
+
 export default router;

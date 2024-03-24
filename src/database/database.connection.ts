@@ -4,7 +4,7 @@ dotenv.config();
 
 export const databaseInit = (mongoUri?: string) => {
   const uri = mongoUri || process.env.DATABASE_MONGO_URL;
-  
+
   try {
     mongoose.connect(uri as string, {});
     const connection = mongoose.connection;
@@ -14,5 +14,3 @@ export const databaseInit = (mongoUri?: string) => {
     console.error("Error connecting to database:", error);
   }
 };
-
-

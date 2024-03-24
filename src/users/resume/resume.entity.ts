@@ -23,5 +23,5 @@ const resumeSchema: Schema<Resume> = new Schema<Resume>({
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Resume: Model<Resume> = mongoose.model<Resume>(
   "Resume",
-  resumeSchema
+  resumeSchema,
 );

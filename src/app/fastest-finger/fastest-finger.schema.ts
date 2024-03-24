@@ -20,7 +20,7 @@ const fastestFingerSchema: Schema<IFastestFinger> = new Schema<IFastestFinger>({
 
 const FastestFingerModel = mongoose.model<IFastestFinger>(
   "FastestFinger",
-  fastestFingerSchema
+  fastestFingerSchema,
 );
 
 export default FastestFingerModel;

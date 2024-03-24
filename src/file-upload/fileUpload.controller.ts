@@ -62,7 +62,6 @@ export class UploadFileController {
       // Send the buffer back to the client
       res.send(buffer);
     } catch (error) {
-      console.log(error);
       res.status(500).send("Internal Server Error");
     }
   }

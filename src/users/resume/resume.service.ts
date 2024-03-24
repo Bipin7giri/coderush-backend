@@ -7,7 +7,7 @@ export class ResumeService {
   constructor(
     private readonly resumeModel = Resume,
     private readonly userModel = User,
-    private readonly log = new Logger()
+    private readonly log = new Logger(),
   ) {}
 
   async create(userId: string, resume: Resume): Promise<string> {
@@ -19,14 +19,14 @@ export class ResumeService {
       const result = await this.resumeModel.create({
         fileId: resume.fileId,
         fileName: "resume",
-        user: user,
+        user,
       });
       await this.userModel.findOneAndUpdate(
         { _id: userId },
         {
           $push: { resume: result },
           isNew: true,
-        }
+        },
       );
       return ApiSuccessStatus.CREATED;
     } catch (error) {

@@ -29,7 +29,6 @@ export class FastestFingerService {
       coderOne,
       coderTwo,
     });
-    console.log(data);
     return ApiSuccessStatus.CREATED;
   }
 
@@ -42,8 +41,6 @@ export class FastestFingerService {
   async verifyAnswer(code: string, answer: any) {
     try {
       const output: any = this.appService.executeNodeCodeSync(code);
-      console.log(answer);
-      console.log(output.output.trim());
       return output.output.trim() === answer ? true : false;
     } catch (err) {
       false;

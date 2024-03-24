@@ -7,12 +7,12 @@ export class WorkExperienceService {
   constructor(
     private readonly workExperienceModel = WorkExperience,
     private readonly userModel = User,
-    private readonly log = new Logger()
+    private readonly log = new Logger(),
   ) {}
 
   async create(
     userId: string,
-    workExperience: WorkExperience
+    workExperience: WorkExperience,
   ): Promise<string> {
     try {
       console.log(userId);
@@ -28,7 +28,7 @@ export class WorkExperienceService {
         { _id: userId },
         {
           $push: { workExperience: result },
-        }
+        },
       );
       console.log(data);
       return ApiSuccessStatus.CREATED;
@@ -41,5 +41,17 @@ export class WorkExperienceService {
     return await this.workExperienceModel.find({
       user: userId,
     });
+  }
+
+  async remove(id: string): Promise<string> {
+    console.log(id);
+    const data = await this.workExperienceModel.findOneAndDelete({ _id: id });
+    console.log(data);
+    return ApiSuccessStatus.DELETED;
+  }
+
+  async update(id: string, workExperience: WorkExperience): Promise<string> {
+    await this.workExperienceModel.findOneAndUpdate({ id }, workExperience);
+    return ApiSuccessStatus.UPDATED;
   }
 }

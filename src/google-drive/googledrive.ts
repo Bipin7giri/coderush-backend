@@ -49,7 +49,6 @@ export async function listFiles(): Promise<void> {
     return;
   }
 
-  console.log("Files:");
   // eslint-disable-next-line array-callback-return
   files?.map((file) => {
     console.log(`${file.name} (${file.id})`);

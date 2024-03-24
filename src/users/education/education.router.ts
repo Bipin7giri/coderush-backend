@@ -7,13 +7,25 @@ const router = Router();
 router.post(
   "/",
   authMiddleware.AuthenticationMiddleware,
-  educationController.post
+  educationController.post,
 );
 
 router.get(
   "/",
   authMiddleware.AuthenticationMiddleware,
-  educationController.getById
+  educationController.getById,
+);
+
+router.put(
+  "/:id",
+  authMiddleware.AuthenticationMiddleware,
+  educationController.update,
+);
+
+router.delete(
+  "/:id",
+  // authMiddleware.AuthenticationMiddleware,
+  educationController.remove,
 );
 
 export default router;
