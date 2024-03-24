@@ -23,7 +23,7 @@ export class UploadFileController {
         .upload(
           req?.file?.path != null ? req?.file?.path : "",
 
-          (result) => {},
+          (result) => {}
         )
         .then((result) => {
           ApiResponseHandler.handleSuccess(res, result.secure_url);
@@ -37,7 +37,7 @@ export class UploadFileController {
   async uploadResume(req: any, res: Response): Promise<void> {
     const userId = req.user;
     const googleDrive = await uploadFileToGoogleDrive(
-      req?.file?.path as string,
+      req?.file?.path as string
     );
     console.log(userId, googleDrive);
     const data = await resumeService.create(userId, {
@@ -55,14 +55,13 @@ export class UploadFileController {
       // Set appropriate headers for file download
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="${metadata.name}"`,
+        `attachment; filename="${metadata.name}"`
       );
       res.setHeader("Content-Type", metadata.mimeType);
 
       // Send the buffer back to the client
       res.send(buffer);
     } catch (error) {
-      console.log(error);
       res.status(500).send("Internal Server Error");
     }
   }
