@@ -13,7 +13,7 @@ async function getFileMetadata(
   const drive = google.drive({ version: "v3", auth: authClient });
 
   const response = await drive.files.get({
-    fileId: fileId,
+    fileId,
     fields: "name, mimeType",
   });
 
