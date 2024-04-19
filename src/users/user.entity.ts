@@ -1,4 +1,9 @@
-import mongoose, { Schema, Document, Types, Model } from "mongoose";
+import mongoose, {
+  Schema,
+  type Document,
+  type Types,
+  type Model,
+} from "mongoose";
 
 export interface User extends Document {
   fullName: string;
@@ -13,6 +18,9 @@ export interface User extends Document {
   password: string;
   roles: Types.ObjectId[];
   questions: Types.ObjectId[];
+  workExperience: Types.ObjectId[];
+  education: Types.ObjectId[];
+  resume: Types.ObjectId;
 }
 
 const userSchema: Schema<User> = new Schema<User>({
@@ -38,6 +46,25 @@ const userSchema: Schema<User> = new Schema<User>({
       ref: "Question",
     },
   ],
+  workExperience: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "WorkExperience",
+    },
+  ],
+  education: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Education",
+    },
+  ],
+  resume: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Resume",
+    },
+  ],
 });
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const User: Model<User> = mongoose.model<User>("User", userSchema);

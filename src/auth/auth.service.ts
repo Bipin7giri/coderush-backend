@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { ApiSuccessStatus } from "../constant/message.constant";
 import { UserRole } from "../enum/user-role.enum";
 import { Role } from "../roles/roles.entity";
@@ -11,20 +12,26 @@ interface RegisterUserIF {
   position: string;
   address: string;
   links: string[];
+  avatar: string;
 }
 
 export class AuthService {
   constructor(
     private readonly userModel = User,
-    private readonly roleModel = Role,
+    private readonly roleModel = Role
   ) {}
+
   async registerUser(data: RegisterUserIF): Promise<string> {
     try {
+      const roles = await this.roleModel.find({ name: UserRole.USER });
+
       const hashedPassword: any = await generateHashPassword(data.password);
       const user = await this.userModel.create({
         email: data.email,
         password: hashedPassword,
         position: data.position,
+        avatar: data.avatar,
+        roles,
         address: data.address,
         links: data.links,
       });
@@ -34,14 +41,14 @@ export class AuthService {
         },
         {
           $push: { users: user },
-        },
+        }
       );
       return ApiSuccessStatus.SUCCESS;
     } catch (error) {
-      console.log(error);
       throw new Error("Something went wrong");
     }
   }
+
   async login({
     email,
     password,
@@ -61,7 +68,7 @@ export class AuthService {
         if (user) {
           const checkPassword: boolean = await comparePassword(
             user.password,
-            password,
+            password
           );
           if (checkPassword) {
             const accessToken: any = await generateToken(user);

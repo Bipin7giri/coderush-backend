@@ -8,7 +8,7 @@ export interface IQuestion extends Document {
   tags: string[];
   created_at: Date;
   updated_at: Date;
-  answers: Schema.Types.ObjectId[];
+  answers: string[];
 }
 
 // Define interface for answer document
@@ -33,7 +33,7 @@ const questionSchema = new Schema<IQuestion>({
   tags: [{ type: String }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  answers: [{ type: Schema.Types.ObjectId, ref: "Answer" }],
+  answers: [{ type: String }],
 });
 
 // Define schema for answers
@@ -49,7 +49,7 @@ const answerSchema = new Schema<IAnswer>({
 // Define models for questions and answers
 const Question: Model<IQuestion> = mongoose.model<IQuestion>(
   "Question",
-  questionSchema
+  questionSchema,
 );
 const Answer: Model<IAnswer> = mongoose.model<IAnswer>("Answer", answerSchema);
 

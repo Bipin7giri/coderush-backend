@@ -3,12 +3,13 @@ import { execSync } from "child_process";
 export default class AppService {
   executeNodeCodeSync(sourceCode: string) {
     try {
-      const startTime = Date.now();
       sourceCode = JSON.parse(sourceCode);
+      sourceCode = sourceCode.replace(/"/g, "'");
+
+      const startTime = Date.now();
       const result = execSync(`node -e "${sourceCode}"`, { encoding: "utf-8" });
 
       const endTime = Date.now();
-      console.log(result);
       const executionTime = endTime - startTime;
       console.log("Execution time:", executionTime, "milliseconds");
 

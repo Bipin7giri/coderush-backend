@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-export const databaseInit = () => {
+
+export const databaseInit = (mongoUri?: string) => {
+  const uri = mongoUri || process.env.DATABASE_MONGO_URL;
+
   try {
-    mongoose.connect(process?.env?.DATABASE_MONGO_URL as string, {});
+    mongoose.connect(uri as string, {});
     const connection = mongoose.connection;
-    console.log("database connection established");
+    console.log("Database connection established");
     return connection;
   } catch (error) {
-    console.log(error);
+    console.error("Error connecting to database:", error);
   }
 };
