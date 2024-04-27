@@ -53,9 +53,7 @@ export const socketService = (app: Express) => {
     });
 
     socket.on("send_message", (data) => {
-      console.log(data);
       const result = appService.executeNodeCodeSync(data.message);
-      console.log(result);
       // Emit the message to everyone in the room associated with the message
       io.to(data.roomId).emit("receive_message", {
         message: result,

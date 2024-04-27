@@ -7,7 +7,7 @@ export class EducationService {
   constructor(
     private readonly educationModel = Education,
     private readonly userModel = User,
-    private readonly log = new Logger(),
+    private readonly log = new Logger()
   ) {}
 
   async create(userId: string, education: Education): Promise<string> {
@@ -25,7 +25,7 @@ export class EducationService {
         { _id: userId },
         {
           $push: { education: result },
-        },
+        }
       );
       console.log(data);
       return ApiSuccessStatus.CREATED;
@@ -41,7 +41,6 @@ export class EducationService {
   }
 
   async remove(id: string): Promise<string> {
-    console.log(id);
     const data = await this.educationModel.findOneAndDelete({ _id: id });
     console.log(data);
     return ApiSuccessStatus.DELETED;

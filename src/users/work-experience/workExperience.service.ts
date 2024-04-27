@@ -7,19 +7,17 @@ export class WorkExperienceService {
   constructor(
     private readonly workExperienceModel = WorkExperience,
     private readonly userModel = User,
-    private readonly log = new Logger(),
+    private readonly log = new Logger()
   ) {}
 
   async create(
     userId: string,
-    workExperience: WorkExperience,
+    workExperience: WorkExperience
   ): Promise<string> {
     try {
-      console.log(userId);
       const user = await this.userModel.findOne({
         _id: userId,
       });
-      console.log(user);
       const result = await this.workExperienceModel.create({
         ...workExperience,
         user,
@@ -28,7 +26,7 @@ export class WorkExperienceService {
         { _id: userId },
         {
           $push: { workExperience: result },
-        },
+        }
       );
       console.log(data);
       return ApiSuccessStatus.CREATED;
