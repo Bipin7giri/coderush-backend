@@ -5,7 +5,7 @@ import { Role } from "./roles.entity";
 export class RoleService {
   constructor(
     private readonly roleModel = Role,
-    private readonly log = new Logger(),
+    private readonly log = new Logger()
   ) {}
 
   async create(role: Role): Promise<ApiSuccessStatus> {
@@ -19,6 +19,7 @@ export class RoleService {
       return ApiSuccessStatus.INTERNAL_SERVER_ERROR;
     }
   }
+
   async findAll(): Promise<Role[]> {
     const roles = await this.roleModel.find({});
     return roles;

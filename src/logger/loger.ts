@@ -3,15 +3,16 @@ dotenv.config();
 export class Logger {
   constructor(
     private readonly log = console,
-    private readonly environment = process.env.NODE_ENV === "DEV",
+    private readonly environment = process.env.NODE_ENV === "DEV"
   ) {}
 
-  logError(err: Error) {
+  logError(err: Error): void {
     if (this.environment) {
       this.log.error(err.message);
     }
   }
-  logMessage(message: string) {
+
+  logMessage(message: string): void {
     if (this.environment) {
       this.log.log(message);
     }

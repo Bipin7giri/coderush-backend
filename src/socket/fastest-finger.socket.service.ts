@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { type Socket } from "socket.io";
-import FastestFingerModel from "../app/fastest-finger/fastest-finger.schema";
+
 import { FastestFingerService } from "../app/fastest-finger/fastest-finger.service";
 
 const activeUsers: any = {};
@@ -15,7 +15,7 @@ export const FastestFingerSocketService = (io: any, socket: Socket) => {
 
     void socket.join(compoundKey);
     console.log(
-      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`,
+      `Socket ${data.username} joined room for fastest finger round ${compoundKey}`
     );
 
     // Check if the room exists in the user list

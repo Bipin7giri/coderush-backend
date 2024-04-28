@@ -11,14 +11,14 @@ router.post(
   "/",
   //   authMiddleware.AuthenticationMiddleware,
   //   authMiddleware.AdminRoleMiddleware,
-  questionController.create,
+  questionController.create
 );
 
 router.put(
   "/:id",
   //   authMiddleware.AuthenticationMiddleware,
   //   authMiddleware.AdminRoleMiddleware,
-  questionController.update,
+  questionController.update
 );
 
 router.get("/difficulty/:difficulty", questionController.getByDifficulty);
