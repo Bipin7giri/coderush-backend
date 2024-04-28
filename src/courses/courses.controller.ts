@@ -15,13 +15,11 @@ export class CoursesController {
   }
 
   async getCoursesByCategory(req: Request, res: Response): Promise<void> {
-    console.log("i am in courses category");
     const data = await coursesService.getCoursesByCategory(req.params.id);
     ApiResponseHandler.handleSuccess(res, data);
   }
 
   async getAllCategoryCourses(req: Request, res: Response): Promise<void> {
-    console.log("i am here");
     const data = await coursesService.getAllCategoryCourses();
     ApiResponseHandler.handleSuccess(res, data);
   }

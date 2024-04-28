@@ -5,7 +5,7 @@ import { Role } from "../roles/roles.entity";
 import { User } from "../users/user.entity";
 import { comparePassword, generateHashPassword } from "../utils/hashpassword";
 import { generateToken } from "../utils/jwt";
-import { Request, Response } from "express";
+import { type Response } from "express";
 interface RegisterUserIF {
   email: string;
   password: string;
@@ -62,7 +62,7 @@ export class AuthService {
       try {
         const user: any = await this.userModel
           .findOne({
-            email: email,
+            email,
           })
           .populate("roles");
         if (user) {

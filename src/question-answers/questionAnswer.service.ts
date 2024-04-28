@@ -5,7 +5,7 @@ import { type IQuestion, QuestionAnswerModel } from "./QuestionAnswer.entity";
 export class QuestionAnswerService {
   constructor(
     private readonly questionModel = QuestionAnswerModel.Question,
-    private readonly log = new Logger(),
+    private readonly log = new Logger()
   ) {}
 
   async createQuestion(question: IQuestion): Promise<string> {
@@ -20,7 +20,6 @@ export class QuestionAnswerService {
       console.log(error);
 
       this.log.logError(error.message as Error);
-      throw error;
       return error.message;
     }
   }
@@ -30,9 +29,9 @@ export class QuestionAnswerService {
       const updatedQuestion = await this.questionModel.findByIdAndUpdate(
         question._id,
         question,
-        { new: true },
+        { new: true }
       );
-      if (!updatedQuestion) {
+      if (updatedQuestion == null) {
         return ApiSuccessStatus.NOT_FOUND;
       }
       return ApiSuccessStatus.UPDATED;
@@ -43,7 +42,7 @@ export class QuestionAnswerService {
   }
 
   async findQuestionsByDifficulty(
-    difficulty: string,
+    difficulty: string
   ): Promise<IQuestion[] | null> {
     try {
       const questions = await this.questionModel.find({ difficulty }).exec();
@@ -57,7 +56,7 @@ export class QuestionAnswerService {
   async findAllQuestions(
     page: number = 1,
     limit: number = 10,
-    searchQuery?: string,
+    searchQuery?: string
   ): Promise<
     | {
         questions: IQuestion[];
@@ -70,7 +69,7 @@ export class QuestionAnswerService {
   > {
     try {
       let query = {};
-      if (searchQuery) {
+      if (searchQuery != null) {
         query = { $text: { $search: searchQuery } };
       }
 
